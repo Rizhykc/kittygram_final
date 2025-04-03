@@ -3,7 +3,6 @@ version: '3'
 volumes:
   pg_data_production:
   static_volume:
-  media:
 
 services:
 
@@ -20,7 +19,7 @@ services:
       - db
     volumes:
       - static_volume:/backend_static
-      - media:/app/media
+      - /var/www/kittygram/media/:/app/media/
 
   frontend:
     image: hikari393/kittygram_frontend
@@ -39,6 +38,6 @@ services:
       - frontend
     volumes:
       - static_volume:/staticfiles/
-      - media:/app/media
+      - /var/www/kittygram/media/:/app/media/
     ports:
       - 9000:80
