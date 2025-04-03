@@ -2,12 +2,15 @@ name: Main kittygram workflow
 
 on:
   push:
-    branches:
-      - main
+    branches: '*'
 
 jobs:
 
-  lint: 
+  lint:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
     runs-on: ubuntu-latest 
     steps: 
     - name: Check out code 
@@ -15,7 +18,7 @@ jobs:
     - name: Set up Python 
       uses: actions/setup-python@v4 
       with: 
-        python-version: 3.9
+        python-version: ${{ matrix.python-version }}
         cache: 'pip'
     - name: Install dependencies 
       run: | 
@@ -139,6 +142,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs:
       - build_backend_and_push_to_docker_hub
       - build_frontend_and_push_to_docker_hub
@@ -180,4 +184,7 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: Деплой успешно выполнен! Можешь поспать часик) 
+        message: |
+         Деплой успешно выполнен! Можешь поспать часик)
+         Автор: ${{ github.actor }}
+         https://github.com/${{ github.repository }}/commit/${{ github.sha }}
