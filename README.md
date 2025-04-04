@@ -39,6 +39,10 @@
    DB_PASSWORD=your_password
    DB_HOST=db
    DB_PORT=5432
+   DATABASE_USE=False
+   SECRET_KEY=your_django_key
+   DEBUG=False
+   ALLOWED_HOSTS=127.0.0.1,localhost
    ```
 
 3. **Запустите Docker Compose:**
